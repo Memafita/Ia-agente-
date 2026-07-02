@@ -1,0 +1,23 @@
+# ============================================================
+# Triagem Técnica IA — config Netlify (deploy pelo iPhone)
+# Publica index.html + sw.js e aplica headers de segurança.
+# (A função serverless netlify/functions/link.js é um upgrade
+#  futuro — não é necessária para o app funcionar.)
+# ============================================================
+[build]
+  publish = "."
+
+# Headers de segurança (defense in depth)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; manifest-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
